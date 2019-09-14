@@ -65,7 +65,8 @@ export default {
       .meal-time-item-title {
         text-align: center;
         font-size: 30px;
-        font-weight: bold;
+        font-weight: 700;
+        font-family: "Roboto", "Segoe UI", "GeezaPro", "DejaVu Serif";
         background: #C0C0C0;
         margin: 5px 0;
         padding: 10px ;

@@ -2,9 +2,9 @@ import Vue from 'vue'
 import App from './App'
 import { createStore } from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTrashAlt, faEdit, faBars, faClipboard } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt, faEdit, faBars, faClipboard, faPlusSquare, faHome, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(faTrashAlt, faEdit, faBars, faClipboard)
+library.add(faTrashAlt, faEdit, faBars, faClipboard, faPlusSquare, faHome, faAngleLeft, faAngleRight)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 const store = createStore()

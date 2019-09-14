@@ -6,6 +6,7 @@
       v-model="mealModel"
       handle=".drag-handle"
       group="meal"
+      v-bind="dragOptions"
       @end="onDishDragEnd"
     >
       <dish-item
@@ -46,6 +47,14 @@ export default {
     }
   },
   computed: {
+    dragOptions () {
+      return {
+        animation: 200,
+        group: 'description',
+        disabled: false,
+        ghostClass: 'ghost'
+      }
+    }
   },
   watch: {
     meal (newValue) {

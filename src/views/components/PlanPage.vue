@@ -8,17 +8,19 @@
 <script>
 import TimeSelect from './components/TimeSelect'
 import MealList from './MealTimeList/MealTimeList'
-import IconButton from '../../shared/IconButton/IconButton'
 
 export default {
   components: {
     MealList,
-    TimeSelect,
+    TimeSelect
   }
 }
 </script>
 
 <style lang="scss" scoped>
+  .plan-page{
+    padding: 20px;
+  }
   .time-select {
     width: 60vw;
   }

@@ -43,7 +43,15 @@ const state = () => ({
         }
       ]
     ]
-  ]
+  ],
+  time: {
+    weekIndex: 22,
+    weekDay: 0,
+    mealTime: 0
+  },
+  meal: {
+    mealIndex: 0
+  }
 })
 
 export default {

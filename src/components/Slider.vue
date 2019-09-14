@@ -2,18 +2,20 @@
   <div>
     <!-- Nav Links -->
     <div ref="slider" class="navMenu" :style="[menuDirection, menuWidth]">
-      <a href="javascript:void(0)" class="closebtn" @click="closeMenu()">&times;</a>
+      <a href="javascript:void(0)" class="closebtn" @click="closeMenu()"><font-awesome-icon icon="angle-left"></font-awesome-icon></a>
       <div v-for="(step, stepIndex) in steps" :key="step.id" @click="selectedStepIndex = stepIndex" class="leftWrapper">
         <div class="stepTitle">{{step.text}}</div>
         <div v-if="stepIndex === 0" class="weeksWrapper">
           <v-select class="vSelect" v-model="selected" :option="options" :placement="placement"></v-select>
+          <div class="collapseWeeks">
           <div v-for="(week, weekIndex) in weeks" :key="weekIndex">
-            <span @click="selectWeek(weekIndex)" :class="{'selectedWeek': weekIndex === selectedWeekIndex}">{{ week }}</span>
+            <div @click="selectWeek(weekIndex)" :class="{'selectedWeek': weekIndex === selectedWeekIndex}">{{ week }}</div>
             <div v-if="weekIndex === selectedWeekIndex" class="weekItem">
               <div v-for="(link, linkIndex) in meals" :key="linkIndex" @click="selectedLinkIndex = linkIndex" class="mealItem" :class="{'selected':linkIndex === selectedLinkIndex}">
                 {{ link }}
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -33,7 +35,6 @@
 
 <script>
 import styles from '@/assets/sass/variables.scss'
-import utilities from '@/js/utilities'
 import vSelect from 'vselect-component'
 import { MEALS, WEEKS } from '../consts/consts'
 
@@ -119,7 +120,7 @@ export default {
     },
     openMenu () {
       if (this.opacity) {
-        document.body.style.backgroundColor = utilities.hexToRGB(styles['background-color'], this.opacity)
+        // document.body.style.backgroundColor = utilities.hexToRGB(styles['background-color'], this.opacity)
       }
       this.setFormat()
     },
@@ -172,6 +173,9 @@ export default {
     background-color: $background-color;
     transition: background-color .5s;
   }
+  .navIcon{
+    margin-top: 20px;
+  }
   #app {
     transition: margin-left .5s;
     transition: margin-right .5s;
@@ -180,24 +184,33 @@ export default {
   .navMenu a{
     color: black !important;
   }
+  .collapseWeeks>div{
+    border-bottom: 1px solid #999999;
+    padding: 2px;
+  }.collapseWeeks{
+    margin-bottom: 25px;
+  }
   ::v-deep .vSelect {
     float: right;
     width: 100%;
     .dropMenu {
       background: #dbdbdb;
-      border:1px solid rgba(0, 0, 0, 0.5);
+      border-radius: unset;
     }
     input, li{
       background: #dbdbdb;
-      border: none;
       border-radius: unset;
       text-align: center;
+      border: unset;
       padding: 8px 0;
     }
   }
   .weeksWrapper{
-    margin-left: 60px;
+    padding-left: 60px;
     font-size: 21px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid black;
   }
   .leftWrapper{
     font-size: 21px;
@@ -222,7 +235,8 @@ export default {
     border-bottom: 1px solid rgba(0,0,0,0.5);
   }
   .navMenu {
-    font-family: $font-family-sans-serif;
+    margin-top: 50px;
+    font-family: "Roboto", "Segoe UI", "GeezaPro", "DejaVu Serif";
     height: 100%;
     width: 0;
     position: fixed;

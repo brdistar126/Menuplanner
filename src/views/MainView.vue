@@ -12,22 +12,31 @@
       ]"
     >
     </slider>
-    <plan-page></plan-page>
+    <div style="display: flex">
+      <plan-page></plan-page>
+      <RightSidebar/>
+    </div>
   </div>
 </template>
 
 <script>
 import Slider from '../components/Slider'
 import PlanPage from './components/PlanPage'
+import RightSidebar from './components/RightSidebar/RightSidebar'
 
 export default {
   components: {
     'slider': Slider,
-    PlanPage
+    PlanPage,
+    RightSidebar
   }
 }
 </script>
 
 <style scoped>
-
+  .right-sidebar-section{
+    margin-top: 50px;
+    width:30vw;
+    height:60vh;
+  }
 </style>

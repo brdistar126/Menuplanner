@@ -9,6 +9,13 @@ const ADD_MEAL = (state, timeIndex) => {
     }]
   )
 }
+const SET_WEEKDAY = (state, weekDay) => {
+  state.time.weekDay = weekDay
+}
+
+const SET_MEAL = (state, mealIndex) => {
+  state.meal.mealIndex = mealIndex
+}
 
 const REMOVE_DISH = (state, { mealTime, mealIndex, dishIndex }) => {
   state.meals[mealTime][mealIndex].splice(dishIndex, 1)
@@ -20,5 +27,7 @@ const REMOVE_DISH = (state, { mealTime, mealIndex, dishIndex }) => {
 export default {
   SET_MEALS,
   ADD_MEAL,
-  REMOVE_DISH
+  REMOVE_DISH,
+  SET_WEEKDAY,
+  SET_MEAL
 }
