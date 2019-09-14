@@ -3,13 +3,20 @@
     <!-- Nav Links -->
     <div ref="slider" class="navMenu" :style="[menuDirection, menuWidth]">
       <a href="javascript:void(0)" class="closebtn" @click="closeMenu()">&times;</a>
-      <a v-for="link in links" :key="link.id" :href="link.url">{{ link.text }}</a>
-      <VueFaqAccordion
-        :items="myItems"
-      />
-      <ul>
-        <li></li>
-      </ul>
+      <div v-for="(step, stepIndex) in steps" :key="step.id" @click="selectedStepIndex = stepIndex" class="leftWrapper">
+        <div class="stepTitle">{{step.text}}</div>
+        <div v-if="stepIndex === 0" class="weeksWrapper">
+          <v-select class="vSelect" v-model="selected" :option="options" :placement="placement"></v-select>
+          <div v-for="(week, weekIndex) in weeks" :key="weekIndex">
+            <span @click="selectWeek(weekIndex)" :class="{'selectedWeek': weekIndex === selectedWeekIndex}">{{ week }}</span>
+            <div v-if="weekIndex === selectedWeekIndex" class="weekItem">
+              <div v-for="(link, linkIndex) in meals" :key="linkIndex" @click="selectedLinkIndex = linkIndex" class="mealItem" :class="{'selected':linkIndex === selectedLinkIndex}">
+                {{ link }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- Hamburger Menu -->
     <nav ref="menuIcon" class="navIcon" :style="iconDirection">
@@ -27,9 +34,14 @@
 <script>
 import styles from '@/assets/sass/variables.scss'
 import utilities from '@/js/utilities'
+import vSelect from 'vselect-component'
+import { MEALS, WEEKS } from '../consts/consts'
 
 export default {
   name: 'slider',
+  components: {
+    vSelect
+  },
   props: {
     width: {
       type: Number,
@@ -51,7 +63,7 @@ export default {
       required: false,
       default: 0
     },
-    links: {
+    steps: {
       type: Array,
       required: true
     }
@@ -61,7 +73,22 @@ export default {
       styles: styles,
       menuWidth: {
         'width': 0
-      }
+      },
+      selectedWeekIndex: -1,
+      selectedLinkIndex: -1,
+      index: 1,
+      options: [{
+        value: 1,
+        label: 'Week 22'
+      }, {
+        value: 2,
+        label: 'Week 23'
+      }],
+      selected: {
+        value: 1,
+        label: 'Week 22'
+      },
+      placement: 'down'
     }
   },
   computed: {
@@ -73,9 +100,23 @@ export default {
     },
     app () {
       return document.getElementById('app')
+    },
+    meals () {
+      return MEALS;
+    },
+    weeks () {
+      return WEEKS;
     }
   },
   methods: {
+    selectWeek (weekIndex) {
+      if (this.selectedWeekIndex === weekIndex) {
+        this.selectedWeekIndex = -1
+      } else {
+        this.selectedWeekIndex = weekIndex
+      }
+      this.selectedLinkIndex = -1
+    },
     openMenu () {
       if (this.opacity) {
         document.body.style.backgroundColor = utilities.hexToRGB(styles['background-color'], this.opacity)
@@ -136,6 +177,50 @@ export default {
     transition: margin-right .5s;
     padding: 20px;
   }
+  .navMenu a{
+    color: black !important;
+  }
+  ::v-deep .vSelect {
+    float: right;
+    width: 100%;
+    .dropMenu {
+      background: #dbdbdb;
+      border:1px solid rgba(0, 0, 0, 0.5);
+    }
+    input, li{
+      background: #dbdbdb;
+      border: none;
+      border-radius: unset;
+      text-align: center;
+      padding: 8px 0;
+    }
+  }
+  .weeksWrapper{
+    margin-left: 60px;
+    font-size: 21px;
+  }
+  .leftWrapper{
+    font-size: 21px;
+  }
+  .weekItem{
+    margin-left: 20px;
+    &.selected {
+      background-color: #d1e294;
+    }
+  }
+  .mealItem{
+    margin-left: 20px;
+    &.selected {
+      background: #d1e294;
+    }
+  }
+  .selectedWeek {
+    background: #d1e294;
+  }
+  .stepTitle{
+    padding-left: 30px;
+    border-bottom: 1px solid rgba(0,0,0,0.5);
+  }
   .navMenu {
     font-family: $font-family-sans-serif;
     height: 100%;
@@ -164,6 +249,14 @@ export default {
       right: 25px;
       font-size: 36px;
       margin-left: 50px;
+      color: black;
+      font-weight: 900;
+    }
+    .closebtn:hover {
+      color: black;
+    }
+    v-select {
+      float: right;
     }
   }
   @media screen and (max-height: 450px) {
