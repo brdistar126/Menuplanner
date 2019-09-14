@@ -1,20 +1,20 @@
 <template>
-  <div class="icon-button">
-    <add-icon />
+  <div class="icon-button" @click="onClick">
     <span class="icon-button-title">{{ title }}</span>
   </div>
 </template>
 
 <script>
-import AddIcon from './add_icon.svg'
 
 export default {
   components: {
-    'add-icon': AddIcon
   },
   props: {
     title: {
       type: String
+    },
+    onClick: {
+      type: Function
     }
   }
 }
@@ -22,6 +22,9 @@ export default {
 
 <style lang="scss" scoped>
   .icon-button {
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
     padding: 5px 8px;
     background-color: #E0E0E0;
     width: fit-content;

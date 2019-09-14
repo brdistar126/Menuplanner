@@ -102,10 +102,10 @@ export default {
       return document.getElementById('app')
     },
     meals () {
-      return MEALS;
+      return MEALS
     },
     weeks () {
-      return WEEKS;
+      return WEEKS
     }
   },
   methods: {

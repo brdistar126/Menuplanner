@@ -1,18 +1,19 @@
 <template>
   <div class="plan-page">
     <time-select></time-select>
-    <icon-button title="Add"></icon-button>
+    <meal-list></meal-list>
   </div>
 </template>
 
 <script>
 import TimeSelect from './components/TimeSelect'
+import MealList from './MealTimeList/MealTimeList'
 import IconButton from '../../shared/IconButton/IconButton'
 
 export default {
   components: {
+    MealList,
     TimeSelect,
-    IconButton
   }
 }
 </script>

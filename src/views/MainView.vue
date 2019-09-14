@@ -18,7 +18,7 @@
 
 <script>
 import Slider from '../components/Slider'
-import PlanPage from './Components/PlanPage'
+import PlanPage from './components/PlanPage'
 
 export default {
   components: {

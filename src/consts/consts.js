@@ -1,17 +1,3 @@
-const dishes = [
-  {
-    name: 'Grilled Sauge',
-    type: 'Meat'
-  },
-  {
-    name: '12222e',
-    type: 'type2'
-  },
-  {
-    name: '3333e',
-    type: 'type3'
-  }
-]
 const MEALS = [
   'Breakfast',
   'Lunch',
@@ -26,8 +12,29 @@ const WEEKS = [
   'Saturday',
   'Sunday'
 ]
+const DISH_TYPES = [
+  'Selction Menu',
+  'Cafe complet',
+  'Ingredients of cooking',
+  'Diet',
+  'Pureed',
+  'Brunch',
+  'Vegatarian',
+  'Bread bag',
+  'Bread',
+  'Dssert',
+  'Surpirse menu'
+]
+const DISHES = [
+  'Grilled Sausage',
+  'French Fires',
+  'Pizza',
+  'Tofu Roll',
+  'Salad with French Dressing'
+]
 export {
-  dishes,
+  DISH_TYPES,
+  DISHES,
   MEALS,
   WEEKS
 }
