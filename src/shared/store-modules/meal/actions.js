@@ -102,7 +102,11 @@ export default {
   PREFETCH_COMPONENT_PHOTO: async function ({ commit }, id) {
     axios.get(`${API_DEV_URL}/v1/component-photos?componentId=${id}`)
       .then((res) => {
-        commit('SET_IMAGES', res.data.componentPhotos[res.data.componentPhotos.length - 1])
+        console.log('data: ', res) // fixme
+        const data = (res.data.componentPhotos.length > 0)
+          ? res.data.componentPhotos[res.data.componentPhotos.length - 1]
+          : { componentId: id }
+        commit('SET_IMAGES', data)
       })
       .catch((err) => {
         console.log(err)

@@ -96,6 +96,7 @@ const UPDATE_IMAGES = (state, images) => {
 }
 
 const SET_IMAGES = (state, images) => {
+  console.log(images)
   if (state.images[images.componentId] === undefined) {
     state.images[images.componentId] = {
       main: {},
