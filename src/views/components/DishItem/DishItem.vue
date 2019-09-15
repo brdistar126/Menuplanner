@@ -74,10 +74,12 @@ export default {
     }),
     ...mapActions({
       DELETE_COMPONENT_DISH: '$_meal/DELETE_COMPONENT_DISH',
-      PUT_COMPONENT_DISH: '$_meal/PUT_COMPONENT_DISH'
+      PUT_COMPONENT_DISH: '$_meal/PUT_COMPONENT_DISH',
+      PREFETCH_COMPONENT_PHOTO: '$_meal/PREFETCH_COMPONENT_PHOTO'
     }),
 
     onDetails () {
+      this.PREFETCH_COMPONENT_PHOTO(this.dishId)
       this.SET_DISH({
         mealTime: this.mealTime,
         mealIndex: this.mealIndex,
@@ -93,6 +95,7 @@ export default {
       })
     },
     onSave () {
+      console.log('>>>>>>>>>', this.dishId)
       this.editMode = false
       console.log('name: ', this.item.name)
       console.log('type: ', this.selectedDishType)

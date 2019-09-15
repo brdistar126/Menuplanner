@@ -2,32 +2,49 @@
   <div class="ingredient-item-section">
     <div class="edit-section">
       <div class="edit-title">
-        <edit-bt :title="title" url="Here Image url" revert></edit-bt>
+        <edit-bt :value="item.name" url="Here Image url" revert :on-save="onSaveItem"></edit-bt>
       </div>
       <div class="edit-bt">
         <font-awesome-icon icon="bars" class="drag-ingredient"/>
-        <font-awesome-icon icon="trash-alt"/>
+        <font-awesome-icon icon="trash-alt" @click="onRemove"/>
       </div>
     </div>
-    <input type="text" style="height: 20px;">
+    <input v-model="item.url" type="text" style="height: 20px; width: 80px;">
     <input type="button" value="save" style="height: 20px;">
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import editBt from './EditBt'
 
 export default {
   components: { editBt },
   props: {
-    title: String,
-    url: String
+    item: Object,
+    index: Number,
+    setItemValue: Function
   },
   component: {
     editBt
   },
   data () {
     return {}
+  },
+  methods: {
+    ...mapMutations({
+      REMOVE_INGREDIENT: '$_meal/REMOVE_INGREDIENT'
+    }),
+    onSaveItem (value) {
+      console.log(value)
+      this.setItemValue(this.index, {
+        name: value,
+        url: this.item.url
+      })
+    },
+    onRemove () {
+      this.REMOVE_INGREDIENT(this.index)
+    }
   }
 }
 </script>
@@ -66,14 +83,6 @@ export default {
         width: 40%;
         height: 100%;
       }
-    }
-    .ingredient-body {
-      width: 100%;
-      height: 60%;
-    }
-    .ingredient-up-bt {
-      padding: 10px;
-      margin-top: 25%;
     }
   }
 </style>

@@ -36,7 +36,7 @@ export default {
 <style scoped>
   .right-sidebar-section{
     margin-top: 50px;
-    width:30vw;
+    width:20vw;
     height:60vh;
   }
 </style>

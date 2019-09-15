@@ -1,6 +1,6 @@
 <template>
   <div class="ingredient-section">
-    <label class="ingredient-title">{{title}}</label>
+    <label class="ingredient-title">{{name}}</label>
     <div class="ingredient-body">
       <draggable
         handle=".drag-ingredient"
@@ -8,14 +8,15 @@
         v-bind="dragOptions"
       >
       <ingredient-item
-        v-for="(ingredientItem, ingredientKey) in ingredientItems"
-        :title="ingredientItem.title"
-        :url="ingredientItem.src"
+        v-for="(ingredientItem, ingredientKey) in data"
+        :item="ingredientItem"
+        :index="ingredientKey"
         :key="ingredientKey"
+        :set-item-value="setItemValue"
       ></ingredient-item>
       </draggable>
     </div>
-    <div class="ingredient-up-bt">
+    <div class="ingredient-up-bt" @click="onAddIngredient">
       <button>ADD NEW IMAGE</button>
     </div>
   </div>
@@ -23,6 +24,7 @@
 
 <script>
 
+import { mapGetters, mapMutations } from 'vuex'
 import ingredientItem from './elements/IngredientItem'
 import draggable from 'vuedraggable'
 export default {
@@ -31,7 +33,9 @@ export default {
     draggable
   },
   props: {
-    title: String
+    name: String,
+    data: Array,
+    onSaveIngredient: Function
   },
   computed: {
     dragOptions () {
@@ -44,17 +48,19 @@ export default {
     }
   },
   data () {
-    return {
-      ingredientItems: [
-        {
-          title: 'OIL',
-          src: './oil.jpg'
-        },
-        {
-          title: 'Potatoes',
-          src: './potatoes.jpg'
-        }
-      ]
+    return {}
+  },
+  methods: {
+    ...mapMutations({
+      ADD_INGREDIENT: '$_meal/ADD_INGREDIENT'
+    }),
+    setItemValue (index, item) {
+      const updatedData = this.data
+      updatedData[index] = item
+      this.onSaveIngredient(updatedData)
+    },
+    onAddIngredient () {
+      this.ADD_INGREDIENT()
     }
   }
 }
@@ -81,11 +87,10 @@ export default {
     }
     .ingredient-body{
       width: 100%;
-      height: 60%;
+      overflow: auto;
     }
     .ingredient-up-bt{
       padding: 10px;
-      margin-top: 25%;
     }
   }
 </style>

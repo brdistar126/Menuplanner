@@ -1,7 +1,7 @@
 <template>
   <div class="icon-button" @click="onClick" :class="{'small': small}">
     <font-awesome-icon v-if="icon" :icon="icon" />
-    <span class="icon-button-title">{{ title }}</span>
+    <span class="icon-button-title">{{ name }}</span>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
   components: {
   },
   props: {
-    title: {
+    name: {
       type: String
     },
     onClick: {

@@ -91,8 +91,55 @@ const SET_WEEK_INDEX = (state, weekIndex) => {
   state.time.weekIndex = weekIndex
 }
 
+const UPDATE_IMAGES = (state, images) => {
+  state.images[state.selectedDishId] = images
+}
+
+const SET_IMAGES = (state, images) => {
+  if (state.images[images.componentId] === undefined) {
+    state.images[images.componentId] = {
+      main: {},
+      ingredients: []
+    }
+  }
+  console.log('SET_IMAGES:', images, state.images[images.componentId], 'asdf', images, images.componentId)
+  state.images = {
+    ...state.images,
+    [images.componentId]: {
+      main: {
+        name: images.name,
+        description: images.description,
+        url: images.url,
+        id: images.id,
+      },
+      ingredients: state.images[images.componentId].ingredients
+    }
+  }
+  state.selectedDishId = images.componentId
+}
+
+const ADD_INGREDIENT = (state) => {
+  console.log('$$$$', state.images)
+  console.log('!!!', state.images[state.selectedDishId])
+  if (state.images[state.selectedDishId].ingredients === undefined) {
+    state.images[state.selectedDishId] = {
+      main: state.images[state.selectedDishId].main,
+      ingredients: []
+    }
+  }
+  state.images[state.selectedDishId].ingredients.push({
+    name: '',
+    url: ''
+  })
+}
+
+const REMOVE_INGREDIENT = (state, index) => {
+  const dishId = state.meals[state.time.mealTime][state.time.mealIndex].model[state.time.dishIndex].id
+  state.images[dishId].ingredients.splice(index, 1)
+}
 export default {
   SET_MEALS,
+  UPDATE_IMAGES,
   PREFETCH_MEALS,
   ADD_MEAL,
   REMOVE_DISH,
@@ -103,5 +150,8 @@ export default {
   PUT_COMPONENT,
   REMOVE_MEAL,
   SET_DISH,
-  SET_WEEK_INDEX
+  SET_WEEK_INDEX,
+  SET_IMAGES,
+  ADD_INGREDIENT,
+  REMOVE_INGREDIENT
 }

@@ -87,5 +87,34 @@ export default {
       .catch((err) => {
         console.log(err)
       })
+  },
+
+  POST_COMPONENT_PHOTO: async function ({ commit }, data) {
+    axios.post(`${API_DEV_URL}/v1/component-photos`, data)
+      .then((res) => {
+        commit('SET_IMAGES', res.data.componentPhoto)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  },
+
+  PREFETCH_COMPONENT_PHOTO: async function ({ commit }, id) {
+    axios.get(`${API_DEV_URL}/v1/component-photos?componentId=${id}`)
+      .then((res) => {
+        commit('SET_IMAGES', res.data.componentPhotos[res.data.componentPhotos.length - 1])
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  },
+
+  PUT_COMPONENT_PHOTO: async function ({ commit }, data) {
+    axios.put(`${API_DEV_URL}/v1/component-photos/${data.id}`, data.data)
+      .then((res) => {
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 }
