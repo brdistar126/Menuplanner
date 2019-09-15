@@ -8,7 +8,7 @@
     <font-awesome-icon icon="angle-right"></font-awesome-icon>
     <span>{{ currentWeekDay }}</span>
     <font-awesome-icon icon="angle-right"></font-awesome-icon>
-    <span>Lunch</span>
+    <span>{{ currentMealTime }}</span>
   </div>
 </template>
 
@@ -28,8 +28,10 @@ export default {
       time: '$_meal/time'
     }),
     currentWeekDay () {
-      console.log('aaa', this.time.weekDay)
       return this.WEEKS[this.time.weekDay]
+    },
+    currentMealTime () {
+      return this.MEALS[this.time.mealTime]
     }
   },
   name: 'Header'
@@ -38,7 +40,6 @@ export default {
 
 <style scoped>
   #header{
-    opacity: 0.7;
     width: 100%;
     height: 50px;
     z-index: 999;

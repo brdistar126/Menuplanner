@@ -40,57 +40,57 @@ export default {
       allegryItemsLeft: [
         {
           label: 'Sesame',
-          src: '/public/icons/oil.png'
+          src: '/icons/oil.png'
         },
         {
           label: 'Gluten',
-          src: './oil.png'
+          src: '/icons/oil.png'
         },
         {
           label: 'Nuts',
-          src: './potatoes.jpg'
+          src: '/icons/oil.png'
         },
         {
           label: 'Crust',
-          src: './potatoes.jpg'
+          src: '/icons/oil.png'
         },
         {
           label: 'Eggs',
-          src: './potatoes.jpg'
+          src: '/icons/oil.png'
         },
         {
           label: 'Fish  ',
-          src: './potatoes.jpg'
+          src: '/icons/oil.png'
         },
         {
           label: 'Mustard',
-          src: './potatoes.jpg'
+          src: '/icons/oil.png'
         },
         {
           label: 'Milk',
-          src: './potatoes.jpg'
+          src: '/icons/oil.png'
         }
       ],
       allegryItemsRight: [
         {
           label: 'Peanuts',
-          src: './potatoes.jpg'
+          src: '/icons/oil.png'
         },
         {
           label: 'Soya',
-          src: './potatoes.jpg'
+          src: '/icons/oil.png'
         },
         {
           label: 'Shell',
-          src: './potatoes.jpg'
+          src: '/icons/oil.png'
         },
         {
           label: 'Lupin',
-          src: './potatoes.jpg'
+          src: '/icons/oil.png'
         },
         {
           label: 'Sulphite',
-          src: './potatoes.jpg'
+          src: '/icons/oil.png'
         }
       ]
     }

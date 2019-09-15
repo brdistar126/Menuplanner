@@ -1,5 +1,6 @@
 <template>
-  <div class="icon-button" @click="onClick">
+  <div class="icon-button" @click="onClick" :class="{'small': small}">
+    <font-awesome-icon v-if="icon" :icon="icon" />
     <span class="icon-button-title">{{ title }}</span>
   </div>
 </template>
@@ -15,6 +16,12 @@ export default {
     },
     onClick: {
       type: Function
+    },
+    icon: {
+      type: String
+    },
+    small: {
+      type: Boolean
     }
   }
 }
@@ -22,11 +29,21 @@ export default {
 
 <style lang="scss" scoped>
   .icon-button {
+    font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     user-select: none;
-    padding: 5px 8px;
+    padding: 10px;
     background-color: #E0E0E0;
     width: fit-content;
+    font-family: "Roboto", "Segoe UI", "GeezaPro", "DejaVu Serif";
+    svg {
+      margin-right: 10px;
+    }
+    &.small {
+      margin: 20px 0;
+      font-size: 16px;
+      padding: 5px;
+    }
   }
 </style>

@@ -39,7 +39,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #d1e294;
+    border-bottom: 1px solid #edf4d5;
     .edit-section {
       width: 40%;
       height: 100%;

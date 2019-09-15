@@ -45,9 +45,11 @@ const state = () => ({
     ]
   ],
   time: {
-    weekIndex: 22,
+    weekIndex: 0,
     weekDay: 0,
-    mealTime: 0
+    mealTime: 0,
+    mealIndex: 0,
+    dishIndex: -1
   },
   meal: {
     mealIndex: 0

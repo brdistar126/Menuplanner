@@ -1,6 +1,6 @@
 <template>
   <div class="select-item">
-    <img :src="url"/>
+    <img v-bind:src="url"/>
     <input type="checkbox" :id="id" name="cc" />
     <label :for="id"><span></span>{{label}}</label>
   </div>

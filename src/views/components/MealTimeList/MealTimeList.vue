@@ -6,7 +6,11 @@
       class="meal-time-item"
     >
       <span class="meal-time-item-title">{{ mealTime }}</span>
-      <icon-button title="ADD NEW MEAL" :on-click="() => addNewMeal(time)"></icon-button>
+      <icon-button
+        title="ADD NEW MENU"
+        :on-click="() => addNewMeal(time)"
+        icon="plus-square"
+      ></icon-button>
       <meal-item
         v-for="(meal, mealIndex) in meals[time]"
         :key="mealIndex"
@@ -22,7 +26,6 @@
 <script>
 import { mapMutations, mapGetters } from 'vuex'
 import { MEALS } from '../../../consts/consts'
-import DishItem from '../DishItem/DishItem'
 import IconButton from '../../../shared/IconButton/IconButton'
 import MealItem from '../MealItem/MealItem'
 
@@ -60,7 +63,7 @@ export default {
       display: flex;
       flex-direction: column;
       .icon-button {
-        margin-bottom: 10px;
+        margin: 20px 0;
       }
       .meal-time-item-title {
         text-align: center;

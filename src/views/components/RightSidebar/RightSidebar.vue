@@ -3,15 +3,15 @@
     <div class="right-sidebar-content">
       <div v-if="selectedTabIndex === 0"
            class="right-sidebar-content-body1">
-        <upload-photo :title="title"></upload-photo>
+        <upload-photo :title="selectedDish.name"></upload-photo>
       </div>
       <div v-else-if="selectedTabIndex === 1"
            class="right-sidebar-content-body2">
-        <ingredient :title="title"></ingredient>
+        <ingredient :title="selectedDish.name"></ingredient>
       </div>
-      <div v-else
+      <div v-if="selectedTabIndex === 2"
            class="right-sidebar-content-body3">
-        <select-allegry :title="title"></select-allegry>
+        <select-allegry :title="selectedDish.name"></select-allegry>
       </div>
     </div>
     <div class="right-sidebar-list">
@@ -19,7 +19,7 @@
         <li v-for="(tabList, tabIndex) in lists"
             :key="tabIndex"
             class="right-sidebar-item"
-            @click="selectedTabIndex = tabIndex"
+            @click="onSelectTab(tabIndex)"
             :class="{selected:selectedTabIndex === tabIndex}"
         >
           <label>{{tabList}}</label>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import uploadPhoto from './UploadPhoto'
 import ingredient from './Ingredient'
 import selectAllegry from './selectAllgery'
@@ -42,13 +43,31 @@ export default {
   },
   data () {
     return {
-      title: 'FRENCH FRIES',
-      selectedTabIndex: 0,
+      selectedTabIndex: -1,
       lists: [
         'COMPONENT PHOTOS',
         'INGREDIENTS',
         'ALLERGY INFO'
       ]
+    }
+  },
+  methods: {
+    onSelectTab (tabIndex) {
+      if (Object.keys(this.selectedDish).length > 0) {
+        this.selectedTabIndex = tabIndex
+      }
+    }
+  },
+  computed: {
+    ...mapGetters({
+      selectedDish: '$_meal/selectedDish'
+    })
+  },
+  watch: {
+    selectedDish (value) {
+      if (Object.keys(value).length > 0) {
+        this.selectedTabIndex = 0
+      }
     }
   }
 }
@@ -89,9 +108,12 @@ export default {
         width: fit-content;
         height: 100%;
         .right-sidebar-item {
+          cursor: pointer;
           padding: 10px 3px;
           border-bottom: 1px solid white;
           label {
+            cursor: pointer;
+            user-select: none;
             writing-mode: vertical-rl;
             transform: rotate(180deg);
             font-size:12px;

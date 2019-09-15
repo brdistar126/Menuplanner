@@ -1,18 +1,18 @@
 <template>
   <div class="time-select">
     <div class="time-select-day">
-      <span class="time-select-day-prev" @click="onPrevWeekDay"> <font-awesome-icon icon="angle-left"></font-awesome-icon>{{ prevWeekDay }}</span>
-      <span class="time-select-day-selected">Week22 / {{ currentWeekDay }}</span>
-      <span class="time-select-day-next" @click="onNextWeekDay">{{ nextWeekDay }} <font-awesome-icon icon="angle-right"></font-awesome-icon></span>
+      <span class="time-select-day-prev" :key="prevWeekDay" @click="onPrevWeekDay"> <font-awesome-icon icon="angle-left"></font-awesome-icon>{{ prevWeekDay }}</span>
+      <span class="time-select-day-selected" :key="currentWeekDay">{{ `Week ${time.weekIndex + 1} ` }} / {{ currentWeekDay }}</span>
+      <span class="time-select-day-next" :key="nextWeekDay" @click="onNextWeekDay">{{ nextWeekDay }} <font-awesome-icon icon="angle-right"></font-awesome-icon></span>
     </div>
 
     <div class="time-select-meal">
       <div
-        v-for="(meal, mealIndex) in MEALS"
-        :key="mealIndex"
+        v-for="(meal, mealTime) in MEALS"
+        :key="mealTime"
         class="time-select-meal-item"
-        @click="selectedMealIndex = mealIndex"
-        :class="{'selected': selectedMealIndex === mealIndex}"
+        @click="() => onSelectMealTime(mealTime)"
+        :class="{'selected': time.mealTime === mealTime}"
       >
         {{ meal }}
       </div>
@@ -27,55 +27,39 @@ import { MEALS, WEEKS } from '../../../consts/consts'
 export default {
   data () {
     return {
-      selectedMealIndex: -1,
       MEALS,
       WEEKS,
-      currentWeekDayIndex: 4,
-      mealIndex: 1
+      currentWeekDayIndex: 4
     }
   },
   computed: {
     ...mapGetters({
-      time: '$_meal/time',
-      meal: '$_meal/meal'
+      time: '$_meal/time'
     }),
     prevWeekDay () {
-      if (this.currentWeekDayIndex === 0) {
-        return this.WEEKS[this.WEEKS.length - 1]
-      }
-      return this.WEEKS[this.currentWeekDayIndex - 1]
+      return this.WEEKS[(this.time.weekDay - 1 + 7) % 7]
     },
     nextWeekDay () {
-      if (this.currentWeekDayIndex === this.WEEKS.length - 1) {
-        return this.WEEKS[0]
-      }
-      return this.WEEKS[this.currentWeekDayIndex + 1]
+      return this.WEEKS[(this.time.weekDay + 1) % 7]
     },
     currentWeekDay () {
-      return this.WEEKS[this.currentWeekDayIndex]
+      return this.WEEKS[this.time.weekDay]
     }
   },
   methods: {
     ...mapMutations({
       SET_WEEKDAY: '$_meal/SET_WEEKDAY',
-      SET_MEAL: '$_meal/SET_MEAL'
+      SET_MEAL_TIME: '$_meal/SET_MEAL_TIME'
     }),
-    onSelectMeal () {
-      console.log('aaa', this.currentMealIndex)
-      this.SET_MEAL(this.currentMealIndex)
+    onSelectMealTime (mealTime) {
+      this.SET_MEAL_TIME(mealTime)
     },
     onPrevWeekDay () {
-      this.currentWeekDayIndex = (this.currentWeekDayIndex - 1 + 7) % 7
-      this.SET_WEEKDAY(this.currentWeekDayIndex)
+      this.SET_WEEKDAY((this.time.weekDay - 1 + 7) % 7)
     },
     onNextWeekDay () {
-      this.currentWeekDayIndex = (this.currentWeekDayIndex + 1) % 7
-      this.SET_WEEKDAY(this.currentWeekDayIndex)
+      this.SET_WEEKDAY((this.time.weekDay + 1) % 7)
     }
-  },
-  mounted () {
-    this.currentWeekDayIndex = this.time.weekDay
-    this.currentMealIndex = this.meal.mealIndex
   }
 }
 </script>
@@ -117,8 +101,9 @@ export default {
         font-family: "Roboto", "Segoe UI", "GeezaPro", "DejaVu Serif";
         font-weight: 500;
         font-size: 18px;
+        cursor: pointer;
         &.selected {
-          background-color: #d1e294;
+          background-color: #edf4d5;
         }
       }
     }

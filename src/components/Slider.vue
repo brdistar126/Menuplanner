@@ -8,10 +8,10 @@
         <div v-if="stepIndex === 0" class="weeksWrapper">
           <v-select class="vSelect" v-model="selected" :option="options" :placement="placement"></v-select>
           <div class="collapseWeeks">
-          <div v-for="(week, weekIndex) in weeks" :key="weekIndex">
-            <div @click="selectWeek(weekIndex)" :class="{'selectedWeek': weekIndex === selectedWeekIndex}">{{ week }}</div>
-            <div v-if="weekIndex === selectedWeekIndex" class="weekItem">
-              <div v-for="(link, linkIndex) in meals" :key="linkIndex" @click="selectedLinkIndex = linkIndex" class="mealItem" :class="{'selected':linkIndex === selectedLinkIndex}">
+          <div v-for="(week, weekIndex) in WEEKS" :key="weekIndex">
+            <div @click="selectWeek(weekIndex)" class="week-day" :class="{'selectedWeek': weekIndex === time.weekDay}">{{ week }}</div>
+            <div v-if="weekIndex === time.weekDay" class="weekItem">
+              <div v-for="(link, linkIndex) in MEALS" :key="linkIndex" @click="onSelectedMealTime(linkIndex)" class="mealItem" :class="{'selected':linkIndex === time.mealTime}">
                 {{ link }}
               </div>
             </div>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 import styles from '@/assets/sass/variables.scss'
 import vSelect from 'vselect-component'
 import { MEALS, WEEKS } from '../consts/consts'
@@ -75,24 +76,27 @@ export default {
       menuWidth: {
         'width': 0
       },
-      selectedWeekIndex: -1,
-      selectedLinkIndex: -1,
+      selectedMealTimeIndex: -1,
       index: 1,
-      options: [{
-        value: 1,
-        label: 'Week 22'
-      }, {
-        value: 2,
-        label: 'Week 23'
-      }],
+      WEEKS,
+      MEALS,
       selected: {
-        value: 1,
-        label: 'Week 22'
+        value: 0,
+        label: 'Week 1'
       },
       placement: 'down'
     }
   },
   computed: {
+    ...mapGetters({
+      time: '$_meal/time'
+    }),
+    options () {
+      return Array(56).fill().map((value, index) => ({
+        value: index,
+        label: `Week ${index + 1}`
+      }))
+    },
     menuDirection () {
       return this.direction === 'right' ? { 'right': 0 } : { 'left': 0 }
     },
@@ -101,22 +105,19 @@ export default {
     },
     app () {
       return document.getElementById('app')
-    },
-    meals () {
-      return MEALS
-    },
-    weeks () {
-      return WEEKS
     }
   },
   methods: {
+    ...mapMutations({
+      SET_WEEKDAY: '$_meal/SET_WEEKDAY',
+      SET_MEAL_TIME: '$_meal/SET_MEAL_TIME',
+      SET_WEEK_INDEX: '$_meal/SET_WEEK_INDEX'
+    }),
+    onSelectedMealTime (linkIndex) {
+      this.SET_MEAL_TIME(linkIndex)
+    },
     selectWeek (weekIndex) {
-      if (this.selectedWeekIndex === weekIndex) {
-        this.selectedWeekIndex = -1
-      } else {
-        this.selectedWeekIndex = weekIndex
-      }
-      this.selectedLinkIndex = -1
+      this.SET_WEEKDAY(weekIndex)
     },
     openMenu () {
       if (this.opacity) {
@@ -161,6 +162,20 @@ export default {
       } else {
         this.closeMenu()
       }
+    }
+  },
+  mounted () {
+    this.selectedMealTimeIndex = this.time.mealTime
+  },
+  watch: {
+    time (value) {
+      this.selected = {
+        value: value.weekIndex,
+        label: `Week ${value.weekIndex + 1}`
+      }
+    },
+    selected ({ value }) {
+      this.SET_WEEK_INDEX(value)
     }
   }
 }
@@ -218,17 +233,21 @@ export default {
   .weekItem{
     margin-left: 20px;
     &.selected {
-      background-color: #d1e294;
+      background-color: #edf4d5;
     }
+  }
+  .week-day {
+    cursor: pointer;
   }
   .mealItem{
     margin-left: 20px;
+    cursor: pointer;
     &.selected {
-      background: #d1e294;
+      background: #edf4d5;
     }
   }
   .selectedWeek {
-    background: #d1e294;
+    background: #edf4d5;
   }
   .stepTitle{
     padding-left: 30px;
