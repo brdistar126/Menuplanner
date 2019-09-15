@@ -1,7 +1,7 @@
 <template>
   <div class="meal-item">
     <div class="meal-item-header">
-      <span class="meal-item-header-name">Meal {{ mealIndex + 1 }}</span>
+      <span class="meal-item-header-name">Meal {{ index + 1 }}</span>
       <font-awesome-icon
         class="meal-item-header-remove"
         icon="trash-alt"
@@ -20,8 +20,10 @@
         :key="dishIndex"
         :item="dish"
         :meal-time="mealTime"
-        :meal-index="mealIndex"
+        :meal-index="index"
         :dish-index="dishIndex"
+        :dish-id="dish.id"
+        :meal-id="mealIndex"
       ></dish-item>
     </draggable>
     <icon-button
@@ -35,7 +37,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import IconButton from '../../../shared/IconButton/IconButton'
 import DishItem from '../DishItem/DishItem'
 import draggable from 'vuedraggable'
@@ -48,18 +50,24 @@ export default {
   },
   props: {
     meal: {
-      type: Array
+      type: Object
     },
     mealIndex: {
       type: Number
     },
     mealTime: {
       type: Number
+    },
+    index: {
+      type: Number
+    },
+    deleteMeal: {
+      type: Function
     }
   },
   data () {
     return {
-      mealModel: this.meal
+      mealModel: this.meal.model
     }
   },
   computed: {
@@ -74,25 +82,31 @@ export default {
   },
   watch: {
     meal (newValue) {
-      this.mealModel = newValue
+      this.mealModel = newValue.model
     }
   },
   methods: {
     ...mapMutations({
-      ADD_COMPONENT: '$_meal/ADD_COMPONENT',
-      REMOVE_MEAL: '$_meal/REMOVE_MEAL'
+      ADD_COMPONENT: '$_meal/ADD_COMPONENT'
+    }),
+    ...mapActions({
+      DELETE_MEAL_MENU: '$_meal/DELETE_MEAL_MENU',
+      POST_COMPONENT_DISH: '$_meal/POST_COMPONENT_DISH'
     }),
     onAddNewComponent () {
-      this.ADD_COMPONENT({
-        mealTime: this.mealTime,
-        mealIndex: this.mealIndex
-      })
+      const data = {
+        data: {
+          menuId: this.mealIndex,
+          name: 'New Dish',
+          type: 'Meat'
+        },
+        timeIndex: this.mealTime,
+        mealIndex: this.index
+      }
+      this.POST_COMPONENT_DISH(data)
     },
     onRemoveMeal () {
-      this.REMOVE_MEAL({
-        mealTime: this.mealTime,
-        mealIndex: this.mealIndex
-      })
+      this.deleteMeal(this.mealTime, this.mealIndex)
     },
     onDishDragEnd () {
     }

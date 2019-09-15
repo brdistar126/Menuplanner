@@ -11,20 +11,24 @@
         :on-click="() => addNewMeal(time)"
         icon="plus-square"
       ></icon-button>
-      <meal-item
-        v-for="(meal, mealIndex) in meals[time]"
-        :key="mealIndex"
-        :meal="meal"
-        :meal-time="time"
-        :meal-index="mealIndex"
-      >
-      </meal-item>
+      <div v-if="!prefetchFlag" >
+        <meal-item
+          v-for="(meal, mealIndex) in meals[time]"
+          :key="mealIndex"
+          :meal="meal"
+          :meal-time="time"
+          :meal-index="meal.id"
+          :index="mealIndex"
+          :deleteMeal="deleteMeal"
+        >
+        </meal-item>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { MEALS } from '../../../consts/consts'
 import IconButton from '../../../shared/IconButton/IconButton'
 import MealItem from '../MealItem/MealItem'
@@ -36,29 +40,67 @@ export default {
   },
   data () {
     return {
+      prefetchFlag: true
     }
   },
   computed: {
     ...mapGetters({
-      meals: '$_meal/meals'
+      meals: '$_meal/meals',
+      time: '$_meal/time'
     }),
     mealTimes () {
       return MEALS
     }
   },
   methods: {
-    ...mapMutations({
-      ADD_MEAL: '$_meal/ADD_MEAL'
+    ...mapActions({
+      POST_MEAL_MENU: '$_meal/POST_MEAL_MENU',
+      PREFETCH_MEAL_MENU: '$_meal/PREFETCH_MEAL_MENU',
+      DELETE_MEAL_MENU: '$_meal/DELETE_MEAL_MENU',
+      PREFETCH_COMPONENT_DISH: '$_meal/PREFETCH_COMPONENT_DISH'
     }),
     addNewMeal (timeIndex) {
-      this.ADD_MEAL(timeIndex)
+      const data = {
+        data: {
+          'week': this.time.weekIndex,
+          'weekDay': this.time.weekDay,
+          'time': MEALS[timeIndex].toLowerCase(),
+          'name': `MEAL${this.meals[timeIndex].length + 1}`
+        },
+        timeIndex
+      }
+      this.POST_MEAL_MENU(data)
+    },
+    deleteMeal (timeIndex, id) {
+      this.DELETE_MEAL_MENU({
+        mealTime: timeIndex,
+        mealId: id
+      })
     }
+  },
+  mounted () {
+    this.prefetchFlag = true
+    this.PREFETCH_MEAL_MENU({ weekIndex: this.time.weekIndex, weekDay: this.time.weekDay })
+      .then(() => {
+        this.PREFETCH_COMPONENT_DISH()
+          .then(() => {
+            this.prefetchFlag = false
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 }
 </script>
 
 <style lang="scss" scoped>
   .meal-time-list {
+    overflow-y: scroll;
+    height: 75vh;
     .meal-time-item {
       display: flex;
       flex-direction: column;

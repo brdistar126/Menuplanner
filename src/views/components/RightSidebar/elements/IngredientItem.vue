@@ -5,7 +5,7 @@
         <edit-bt :title="title" url="Here Image url" revert></edit-bt>
       </div>
       <div class="edit-bt">
-        <font-awesome-icon icon="bars" />
+        <font-awesome-icon icon="bars" class="drag-ingredient"/>
         <font-awesome-icon icon="trash-alt"/>
       </div>
     </div>

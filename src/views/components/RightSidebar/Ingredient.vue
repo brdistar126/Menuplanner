@@ -2,12 +2,18 @@
   <div class="ingredient-section">
     <label class="ingredient-title">{{title}}</label>
     <div class="ingredient-body">
+      <draggable
+        handle=".drag-ingredient"
+        group="meal"
+        v-bind="dragOptions"
+      >
       <ingredient-item
         v-for="(ingredientItem, ingredientKey) in ingredientItems"
         :title="ingredientItem.title"
         :url="ingredientItem.src"
         :key="ingredientKey"
       ></ingredient-item>
+      </draggable>
     </div>
     <div class="ingredient-up-bt">
       <button>ADD NEW IMAGE</button>
@@ -18,10 +24,24 @@
 <script>
 
 import ingredientItem from './elements/IngredientItem'
+import draggable from 'vuedraggable'
 export default {
-  components: { ingredientItem },
+  components: {
+    ingredientItem,
+    draggable
+  },
   props: {
     title: String
+  },
+  computed: {
+    dragOptions () {
+      return {
+        animation: 200,
+        group: 'description',
+        disabled: false,
+        ghostClass: 'ghost'
+      }
+    }
   },
   data () {
     return {

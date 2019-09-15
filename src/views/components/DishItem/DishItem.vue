@@ -16,7 +16,7 @@
           :options="dishTypes"
         ></vue-single-select>
       </div>
-      <font-awesome-icon v-if="editMode" class="dish-title-save" icon="save" @click="editMode = false"/>
+      <font-awesome-icon v-if="editMode" class="dish-title-save" icon="save" @click="onSave"/>
     </div>
     <div class="dish-control">
       <font-awesome-icon icon="edit" @click="editMode = true"/>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import VueSingleSelect from 'vue-single-select'
 import { DISH_TYPES } from '../../../consts/consts'
 
@@ -48,6 +48,12 @@ export default {
     },
     dishIndex: {
       type: Number
+    },
+    dishId: {
+      type: Number
+    },
+    mealId: {
+      type: Number
     }
   },
   data () {
@@ -66,6 +72,11 @@ export default {
       REMOVE_DISH: '$_meal/REMOVE_DISH',
       SET_DISH: '$_meal/SET_DISH'
     }),
+    ...mapActions({
+      DELETE_COMPONENT_DISH: '$_meal/DELETE_COMPONENT_DISH',
+      PUT_COMPONENT_DISH: '$_meal/PUT_COMPONENT_DISH'
+    }),
+
     onDetails () {
       this.SET_DISH({
         mealTime: this.mealTime,
@@ -74,7 +85,29 @@ export default {
       })
     },
     onRemove () {
-      this.REMOVE_DISH({ mealTime: this.mealTime, mealIndex: this.mealIndex, dishIndex: this.dishIndex })
+      this.DELETE_COMPONENT_DISH({
+        mealTime: this.mealTime,
+        mealIndex: this.mealIndex,
+        dishIndex: this.dishIndex,
+        dishId: this.dishId
+      })
+    },
+    onSave () {
+      this.editMode = false
+      console.log('name: ', this.item.name)
+      console.log('type: ', this.selectedDishType)
+      const data = {
+        mealTime: this.mealTime,
+        mealIndex: this.mealIndex,
+        dishIndex: this.dishIndex,
+        dishId: this.dishId,
+        data: {
+          'menuId': this.mealId,
+          'name': this.item.name,
+          'type': this.selectedDishType
+        }
+      }
+      this.PUT_COMPONENT_DISH(data)
     }
   }
 }

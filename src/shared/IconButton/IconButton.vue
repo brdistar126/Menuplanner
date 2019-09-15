@@ -41,8 +41,8 @@ export default {
       margin-right: 10px;
     }
     &.small {
-      margin: 20px 0;
       font-size: 16px;
+      margin: 20px 0 20px 25px;
       padding: 5px;
     }
   }

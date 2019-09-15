@@ -233,7 +233,7 @@ export default {
   .weekItem{
     margin-left: 20px;
     &.selected {
-      background-color: #edf4d5;
+      background-color: #cee874;
     }
   }
   .week-day {
@@ -243,11 +243,11 @@ export default {
     margin-left: 20px;
     cursor: pointer;
     &.selected {
-      background: #edf4d5;
+      background: #cee874;
     }
   }
   .selectedWeek {
-    background: #edf4d5;
+    background: #cee874;
   }
   .stepTitle{
     padding-left: 30px;

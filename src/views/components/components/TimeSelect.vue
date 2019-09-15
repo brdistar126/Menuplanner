@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { getWeekToday } from '../../../consts/util'
 import { MEALS, WEEKS } from '../../../consts/consts'
 
 export default {
@@ -49,17 +50,38 @@ export default {
   methods: {
     ...mapMutations({
       SET_WEEKDAY: '$_meal/SET_WEEKDAY',
-      SET_MEAL_TIME: '$_meal/SET_MEAL_TIME'
+      SET_MEAL_TIME: '$_meal/SET_MEAL_TIME',
+      SET_WEEK_INDEX: '$_meal/SET_WEEK_INDEX'
+    }),
+    ...mapActions({
+      PREFETCH_MEAL_MENU: '$_meal/PREFETCH_MEAL_MENU',
+      PREFETCH_COMPONENT_DISH: '$_meal/PREFETCH_COMPONENT_DISH'
     }),
     onSelectMealTime (mealTime) {
       this.SET_MEAL_TIME(mealTime)
     },
     onPrevWeekDay () {
+      this.PREFETCH_MEAL_MENU({ weekIndex: this.time.weekIndex, weekDay: (this.time.weekDay - 1 + 7) % 7 })
+        .then(() => {
+          this.PREFETCH_COMPONENT_DISH()
+        })
       this.SET_WEEKDAY((this.time.weekDay - 1 + 7) % 7)
     },
     onNextWeekDay () {
+      this.PREFETCH_MEAL_MENU({ weekIndex: this.time.weekIndex, weekDay: (this.time.weekDay + 1) % 7 })
+        .then(() => {
+          this.PREFETCH_COMPONENT_DISH()
+        })
       this.SET_WEEKDAY((this.time.weekDay + 1) % 7)
     }
+  },
+  mounted () {
+    const today = new Date()
+    let day = today.getDay()
+    let week = getWeekToday(today)
+    console.log('## CALNDER DEBUG: ', day, week)
+    this.SET_WEEKDAY(day)
+    this.SET_WEEK_INDEX(week)
   }
 }
 </script>
@@ -103,7 +125,7 @@ export default {
         font-size: 18px;
         cursor: pointer;
         &.selected {
-          background-color: #edf4d5;
+          background-color: #cee874;
         }
       }
     }

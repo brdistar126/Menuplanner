@@ -1,16 +1,18 @@
+const API_DEV_URL = `http://localhost:3100`
+
 const MEALS = [
   'Breakfast',
   'Lunch',
   'Dinner'
 ]
 const WEEKS = [
+  'Sunday',
   'Monday',
   'Tuesday',
   'Wednesday',
   'Thursday',
   'Friday',
-  'Saturday',
-  'Sunday'
+  'Saturday'
 ]
 const DISH_TYPES = [
   'Selction Menu',
@@ -36,5 +38,6 @@ export {
   DISH_TYPES,
   DISHES,
   MEALS,
-  WEEKS
+  WEEKS,
+  API_DEV_URL
 }
